@@ -1,8 +1,9 @@
-package main
+package utils
 
 import "math/rand"
 
-func generateSquaredMatrix(n int) ([][]float32) {
+// GenerateSquaredMatrix generates an n x n square matrix with floats as elements
+func GenerateSquaredMatrix(n int) [][]float32 {
 
 	dp := make([][]float32, n)
 	for i := range dp {
@@ -12,6 +13,5 @@ func generateSquaredMatrix(n int) ([][]float32) {
 			dp[i][j] = rand.Float32() * float32(rand.Intn(100))
 		}
 	}
-
 	return dp
 }

@@ -4,11 +4,11 @@ import (
 	"sync"
 )
 
-// This function adds two matrices in the form
+// AddMatrices adds two matrices in the form
 // [ a b ] + [ e f ] = [ a+e b+f ]
 // [ c d ]   [ g h ]   [ c+g d+h ]
 // It does so parallelized row-by-row
-func addMatrices(matrixA [][]float32, matrixB [][]float32) [][]float32 {
+func AddMatrices(matrixA [][]float32, matrixB [][]float32) [][]float32 {
 	if matrixA == nil || matrixB == nil {
 		return nil
 	}
@@ -49,10 +49,10 @@ func addRow(irow int, matrixA [][]float32, matrixB [][]float32, result [][]float
 	}
 }
 
-// Multiply a matrix by a scalar in the form:
+// ScalarMultiply multiplies a matrix by a scalar in the form:
 // g[ a b ] = [ ga gb ]
 //  [ c d ]   [ gc gd ]
-func scalarMultiply(scalar float32, matrix [][]float32) {
+func ScalarMultiply(scalar float32, matrix [][]float32) {
 	if matrix == nil {
 		return
 	}
@@ -68,6 +68,7 @@ func scalarMultiply(scalar float32, matrix [][]float32) {
 	for i := range matrix {
 		go scaleRow(i, scalar, matrix, &wg)
 	}
+	wg.Wait()
 }
 
 // Multiply a row of a matrix in a goroutine
