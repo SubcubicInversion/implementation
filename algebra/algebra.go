@@ -27,12 +27,13 @@ func AddMatrices(matrixA [][]float32, matrixB [][]float32) [][]float32 {
 	var wg sync.WaitGroup
 
 	// Instantiate a matrix to return
-	result := make([][]float32, aNumRows, aNumCols)
+	result := make([][]float32, aNumRows)
 
 	// Add the number of columns to the goroutine pool
 	wg.Add(aNumRows)
-	for i := range matrixA {
-		go addRow(i, matrixA, matrixB, result, &wg)
+	for row := range matrixA {
+		result[row] = make([]float32, aNumCols)
+		go addRow(row, matrixA, matrixB, result, &wg)
 	}
 	// Wait until all goroutines have finished before returning
 	wg.Wait()
@@ -42,10 +43,10 @@ func AddMatrices(matrixA [][]float32, matrixB [][]float32) [][]float32 {
 }
 
 // Add two rows of two matrices together in a goroutine
-func addRow(irow int, matrixA [][]float32, matrixB [][]float32, result [][]float32, wg *sync.WaitGroup) {
+func addRow(row int, matrixA [][]float32, matrixB [][]float32, result [][]float32, wg *sync.WaitGroup) {
 	defer wg.Done()
-	for i := range matrixA[irow] {
-		result[irow][i] = matrixA[irow][i] + matrixB[irow][i]
+	for col := range matrixA[row] {
+		result[row][col] = matrixA[row][col] + matrixB[row][col]
 	}
 }
 
@@ -65,16 +66,16 @@ func ScalarMultiply(scalar float32, matrix [][]float32) {
 	numRows := len(matrix)
 
 	wg.Add(numRows)
-	for i := range matrix {
-		go scaleRow(i, scalar, matrix, &wg)
+	for row := range matrix {
+		go scaleRow(row, scalar, matrix, &wg)
 	}
 	wg.Wait()
 }
 
 // Multiply a row of a matrix in a goroutine
-func scaleRow(irow int, scalar float32, matrix [][]float32, wg *sync.WaitGroup) {
+func scaleRow(row int, scalar float32, matrix [][]float32, wg *sync.WaitGroup) {
 	defer wg.Done()
-	for i := range matrix[irow] {
-		matrix[irow][i] = matrix[irow][i] * scalar
+	for col := range matrix[row] {
+		matrix[row][col] = matrix[row][col] * scalar
 	}
 }

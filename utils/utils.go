@@ -9,8 +9,9 @@ import (
 // GenerateSquaredMatrix generates an n x n square matrix with floats as elements.
 func GenerateSquaredMatrix(n int) [][]float32 {
 
-	dp := make([][]float32, n, n)
+	dp := make([][]float32, n)
 	for i := range dp {
+		dp[i] = make([]float32, n)
 		for j := range dp[i] {
 			dp[i][j] = rand.Float32() * float32(rand.Intn(100))
 		}
@@ -23,7 +24,10 @@ func PadMatrix(matrix [][]float32) [][]float32 {
 	currentDim := len(matrix)
 	newDim := int(math.Ceil(math.Log2(float64(currentDim))))
 
-	newMatrix := make([][]float32, newDim, newDim)
+	newMatrix := make([][]float32, newDim)
+	for row := range newMatrix {
+		newMatrix[row] = make([]float32, newDim)
+	}
 	copyMatrix(newMatrix, matrix)
 
 	return newMatrix
