@@ -4,33 +4,33 @@ import (
 	"sync"
 )
 
-//transpose an inserted matrix
-func transpose(matrixA[][]float32) [][]float32 {
+// Transpose transposes a matrix
+func Transpose(matrix[][]float32) [][]float32 {
+	if matrix == nil {
+		return nil
+	}
 	
 	var wg sync.WaitGroup
 
-	length := len(matrixA)
-
-	matrixB := make([][]float32, length)
-
-	for i := range matrixB {
-		matrixB[i] = make([]float32, length)
+	length := len(matrix)
+	transpose := make([][]float32, length)
+	for i := range transpose {
+		transpose[i] = make([]float32, length)
 	}
 
-	wg.Add(len(matrixB))
-	for row := range matrixA {
-		go flip(row, matrixB, matrixA, &wg)
+	wg.Add(length)
+	for row := range matrix {
+		go flip(row, transpose, matrix, &wg)
 	}
-
 	wg.Wait()
 	
-	return  matrixB
+	return transpose
 }
 
-//flip the values
-func flip(row int, matrixB[][]float32, matrixA[][]float32, wg *sync.WaitGroup) {
+// flip flips the rows and performs the transpose in parallel
+func flip(row int, transpose[][]float32, matrix[][]float32, wg *sync.WaitGroup) {
 	defer wg.Done()
-	for col := range matrixA {
-		matrixB[col][row] = matrixA[row][col]
+	for col := range matrix {
+		transpose[col][row] = matrix[row][col]
 	}
 }
