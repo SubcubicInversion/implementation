@@ -23,10 +23,6 @@ func InvertMatrix(matrix [][]float32) ([][]float32, error) {
 			return nil, fmt.Errorf("math: cannot invert a singular matrix")
 		}
 
-		if len(matrix) == 1 {
-
-		}
-
 		if len(matrix) == 2 {
 			matrix[0][0], matrix[1][1] = matrix[1][1], matrix[0][0]
 			matrix[0][1], matrix[1][0] = -1*matrix[0][1], -1*matrix[1][0]
