@@ -57,3 +57,28 @@ func copyRow(row int, newMatrix [][]float32, oldMatrix [][]float32, wg *sync.Wai
 func IsPowerOfTwo(x int) bool {
 	return (x != 0) && ((x & (x - 1)) == 0)
 }
+
+//will insert a matrix and return the transpose
+func transpose(matrixA[][]float32) [][]float32 {
+	
+	length := len(matrixA)
+
+	matrixB := make([][]float32, length)
+	
+	for i := range matrixB {
+		matrixB[i] = make([]float32, length)
+	}
+	
+	for row := range matrixA {
+		flip(row, matrixB, matrixA)
+	}
+	
+	return  matrixB
+}
+//transpose
+func flip(row int, matrixB[][]float32, matrixA[][]float32) {
+
+	for col := range matrixA {
+		matrixB[col][row] = matrixA[row][col]
+	}
+}
