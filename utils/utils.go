@@ -7,16 +7,17 @@ import (
 )
 
 // GenerateSquaredMatrix generates an n x n square matrix with floats as elements.
+// Returns a slice of a 2D array of n x n dimensions.
 func GenerateSquaredMatrix(n int) [][]float32 {
 
-	dp := make([][]float32, n)
-	for i := range dp {
-		dp[i] = make([]float32, n)
-		for j := range dp[i] {
-			dp[i][j] = rand.Float32() * float32(rand.Intn(100))
+	squareMatrix := make([][]float32, n)
+	for row := range squareMatrix {
+		squareMatrix[row] = make([]float32, n)
+		for col := range squareMatrix[row] {
+			squareMatrix[row][col] = rand.Float32() * float32(rand.Intn(100))
 		}
 	}
-	return dp
+	return squareMatrix
 }
 
 // PadMatrix will pad a matrix with zeroes until its dimension is 2^n x 2^n.
