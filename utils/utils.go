@@ -6,9 +6,9 @@ import (
 	"sync"
 )
 
-// GenerateSquaredMatrix generates an n x n square matrix with floats as elements.
+// GenerateSquareMatrix generates an n x n square matrix with floats as elements.
 // Returns a slice of a 2D array of n x n dimensions.
-func GenerateSquaredMatrix(n int) [][]float32 {
+func GenerateSquareMatrix(n int) [][]float32 {
 
 	squareMatrix := make([][]float32, n)
 	for row := range squareMatrix {
