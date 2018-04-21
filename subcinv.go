@@ -3,9 +3,12 @@ package main
 import (
 	"fmt"
 
-	"github.com/SubcubicInversion/implementation/utils"
 	"github.com/SubcubicInversion/implementation/timer"
+
 	"github.com/SubcubicInversion/implementation/algebra"
+
+	"github.com/SubcubicInversion/implementation/utils"
+
 )
 
 func main() {
@@ -13,6 +16,7 @@ func main() {
 	timer.StartTimer(&executionTime, "Execution Test")
 
 	fmt.Println(utils.IsPowerOfTwo(1))
+
 	a := utils.GenerateSquaredMatrix(5)
 	matrix := [][]float32{
 		{2, 7, 3, 5},
@@ -28,7 +32,6 @@ func main() {
 	} else {
 		fmt.Println(det)
 	}
-
 
 	fmt.Println(a)
 
