@@ -70,6 +70,7 @@ func InvertMatrix(matrix [][]float32) ([][]float32, error) {
 
 	var wg sync.WaitGroup
 
+	// Populate array with the blocks, inverting it.
 	wg.Add(3)
 	go func(wg *sync.WaitGroup) {
 		defer wg.Done()
@@ -79,13 +80,15 @@ func InvertMatrix(matrix [][]float32) ([][]float32, error) {
 
 	go func(wg *sync.WaitGroup) {
 		defer wg.Done()
-		c = ScalarMultiply(-1, StrassenMultiply(dInv, caInv))
+		b = ScalarMultiply(-1, abdInv)
 	}(&wg)
 
 	go func(wg *sync.WaitGroup) {
 		defer wg.Done()
-		d = ScalarMultiply(-1, abdInv)
+		c = ScalarMultiply(-1, StrassenMultiply(dInv, caInv))
 	}(&wg)
+	d = dInv
+	wg.Wait()
 
 	return matrix, nil
 }
