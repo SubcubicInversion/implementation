@@ -2,28 +2,39 @@ package algebra
 
 import (
 	"sync"
+
+	"github.com/SubcubicInversion/implementation/utils"
 )
 
 // ScalarMultiply multiplies a matrix by a scalar in the form:
 // g[ a b ] = [ ga gb ]
 //  [ c d ]   [ gc gd ]
-func ScalarMultiply(scalar float32, matrix [][]float32) {
+func ScalarMultiply(scalar float32, matrix [][]float32) [][]float32 {
 	if matrix == nil {
-		return
+		return nil
 	}
 	if scalar == 1 {
-		return
+		return nil
 	}
-
-	var wg sync.WaitGroup
 
 	numRows := len(matrix)
 
+	newMatrix := make([][]float32, numRows)
+	for row := range newMatrix {
+		newMatrix[row] = make([]float32, numRows)
+	}
+
+	utils.CopyMatrix(newMatrix, matrix)
+
+	var wg sync.WaitGroup
+
 	wg.Add(numRows)
-	for row := range matrix {
-		go scaleRow(row, scalar, matrix, &wg)
+	for row := range newMatrix {
+		go scaleRow(row, scalar, newMatrix, &wg)
 	}
 	wg.Wait()
+
+	return newMatrix
 }
 
 // Multiply a row of a matrix in a goroutine

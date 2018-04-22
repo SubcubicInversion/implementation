@@ -29,7 +29,7 @@ func PadMatrix(matrix [][]float32) [][]float32 {
 	for row := range newMatrix {
 		newMatrix[row] = make([]float32, newDim)
 	}
-	copyMatrix(newMatrix, matrix)
+	CopyMatrix(newMatrix, matrix)
 
 	return newMatrix
 }
@@ -49,8 +49,8 @@ func SliceMatrix(matrix [][]float32, begRow int, endRow int, begCol int, endCol 
 	return newMatrix
 }
 
-// copyMatrix will copy the elements of one matrix onto another matrix.
-func copyMatrix(newMatrix [][]float32, oldMatrix [][]float32) {
+// CopyMatrix will copy the elements of one matrix onto another matrix.
+func CopyMatrix(newMatrix [][]float32, oldMatrix [][]float32) {
 
 	var wg sync.WaitGroup
 

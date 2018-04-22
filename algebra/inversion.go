@@ -3,6 +3,7 @@ package algebra
 import (
 	"errors"
 	"fmt"
+	"sync"
 
 	"github.com/SubcubicInversion/implementation/utils"
 )
@@ -49,8 +50,7 @@ func InvertMatrix(matrix [][]float32) ([][]float32, error) {
 			matrix = coefficientMatrix
 		}
 
-		ScalarMultiply(1/det, matrix)
-		return matrix, nil
+		return ScalarMultiply(1/det, matrix), nil
 	}
 
 	// Create four matrix sub-blocks
@@ -59,7 +59,33 @@ func InvertMatrix(matrix [][]float32) ([][]float32, error) {
 	c := utils.SliceMatrix(matrix, dim/2, dim, 0, dim/2)
 	d := utils.SliceMatrix(matrix, dim/2, dim, dim/2, dim)
 
-	InvertMatrix(a)
+	aInv, err := InvertMatrix(a)
+	if err != nil {
+		fmt.Println(err)
+	}
 
-	return nil, nil
+	caInv := StrassenMultiply(c, aInv)
+	dInv, err := InvertMatrix(AddMatrices(d, StrassenMultiply(ScalarMultiply(-1, caInv), b)))
+	abdInv := StrassenMultiply(aInv, StrassenMultiply(b, dInv))
+
+	var wg sync.WaitGroup
+
+	wg.Add(3)
+	go func(wg *sync.WaitGroup) {
+		defer wg.Done()
+		// TODO: Make this actually work because Go isn't this nice.
+		a = AddMatrices(aInv, StrassenMultiply(abdInv, caInv))
+	}(&wg)
+
+	go func(wg *sync.WaitGroup) {
+		defer wg.Done()
+		c = ScalarMultiply(-1, StrassenMultiply(dInv, caInv))
+	}(&wg)
+
+	go func(wg *sync.WaitGroup) {
+		defer wg.Done()
+		d = ScalarMultiply(-1, abdInv)
+	}(&wg)
+
+	return matrix, nil
 }
