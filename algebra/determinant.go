@@ -2,9 +2,9 @@ package algebra
 
 import (
 	"errors"
-	"sync"
 	"fmt"
 	"math"
+	"sync"
 )
 
 // GetDeterminant returns the determinant of an n x n matrix
@@ -28,7 +28,6 @@ func GetDeterminant(matrix [][]float32) (float32, error) {
 	// Instantiate the goroutine pool.
 	var wg sync.WaitGroup
 
-
 	// Instantiate a matrix to return
 	determinants := make([]float32, len(matrix))
 
@@ -50,7 +49,7 @@ func GetDeterminant(matrix [][]float32) (float32, error) {
 	// Wait until all goroutines have finished before returning
 	wg.Wait()
 
-	var response float32 = 0
+	var response float32
 
 	for i := range determinants {
 		response += determinants[i] * matrix[0][i]
@@ -60,25 +59,29 @@ func GetDeterminant(matrix [][]float32) (float32, error) {
 }
 
 func extractInnerMatrixIgnoringGivenRowAndCol(elementRow int, elementCol int, matrix [][]float32) [][]float32 {
-	innerMatrix := make([][]float32, len(matrix) - 1)
+	innerMatrix := make([][]float32, len(matrix)-1)
 
 	for row := range matrix {
-		if(elementRow == row) {
+		if elementRow == row {
 			continue
 		}
 
 		realRow := row
-		if(elementRow <= row) { realRow = row - 1 }
+		if elementRow <= row {
+			realRow = row - 1
+		}
 
-		innerMatrix[realRow] = make([]float32, len(matrix) - 1)
+		innerMatrix[realRow] = make([]float32, len(matrix)-1)
 
 		for col := range matrix[row] {
-			if(elementCol == col) {
+			if elementCol == col {
 				continue
 			}
 
 			realCol := col
-			if(elementCol <= col) { realCol = col - 1 }
+			if elementCol <= col {
+				realCol = col - 1
+			}
 
 			innerMatrix[realRow][realCol] = matrix[row][col]
 		}

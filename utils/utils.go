@@ -34,6 +34,21 @@ func PadMatrix(matrix [][]float32) [][]float32 {
 	return newMatrix
 }
 
+// SliceMatrix will do what Go should do by default and slice a two-dimensional matrix into given dimensions.
+func SliceMatrix(matrix [][]float32, begRow int, endRow int, begCol int, endCol int) [][]float32 {
+	if matrix == nil {
+		return nil
+	}
+	newMatrix := make([][]float32, endRow-begRow)
+	copy(newMatrix, matrix[begRow:endRow])
+
+	for row := range newMatrix {
+		newMatrix[row] = newMatrix[row][begCol:endCol]
+	}
+
+	return newMatrix
+}
+
 // copyMatrix will copy the elements of one matrix onto another matrix.
 func copyMatrix(newMatrix [][]float32, oldMatrix [][]float32) {
 
