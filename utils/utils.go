@@ -9,7 +9,6 @@ import (
 // GenerateSquareMatrix generates an n x n square matrix with floats as elements.
 // Returns a slice of a 2D array of n x n dimensions.
 func GenerateSquareMatrix(n int) [][]float32 {
-
 	squareMatrix := make([][]float32, n)
 	for row := range squareMatrix {
 		squareMatrix[row] = make([]float32, n)
@@ -34,8 +33,21 @@ func PadMatrix(matrix [][]float32) [][]float32 {
 	return newMatrix
 }
 
-// SliceMatrix will do what Go should do by default and slice a two-dimensional matrix into given dimensions.
-func SliceMatrix(matrix [][]float32, begRow int, endRow int, begCol int, endCol int) [][]float32 {
+// GetMatrixSubBlocks will cut a matrix into four sub-blocks.
+func GetMatrixSubBlocks(matrix [][]float32) ([][]float32, [][]float32, [][]float32, [][]float32) {
+
+	dim := len(matrix)
+
+	a := sliceMatrix(matrix, 0, dim/2, 0, dim/2)
+	b := sliceMatrix(matrix, 0, dim/2, dim/2, dim)
+	c := sliceMatrix(matrix, dim/2, dim, 0, dim/2)
+	d := sliceMatrix(matrix, dim/2, dim, dim/2, dim)
+
+	return a, b, c, d
+}
+
+// sliceMatrix will do what Go should do by default and slice a two-dimensional matrix into given dimensions.
+func sliceMatrix(matrix [][]float32, begRow int, endRow int, begCol int, endCol int) [][]float32 {
 	if matrix == nil {
 		return nil
 	}

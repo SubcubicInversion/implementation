@@ -54,10 +54,7 @@ func InvertMatrix(matrix [][]float32) ([][]float32, error) {
 	}
 
 	// Create four matrix sub-blocks
-	a := utils.SliceMatrix(matrix, 0, dim/2, 0, dim/2)
-	b := utils.SliceMatrix(matrix, 0, dim/2, dim/2, dim)
-	c := utils.SliceMatrix(matrix, dim/2, dim, 0, dim/2)
-	d := utils.SliceMatrix(matrix, dim/2, dim, dim/2, dim)
+	a, b, c, d := utils.GetMatrixSubBlocks(matrix)
 
 	aInv, err := InvertMatrix(a)
 	if err != nil {
