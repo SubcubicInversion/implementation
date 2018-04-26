@@ -13,15 +13,15 @@ func StrassenMultiply(matrixA [][]float32, matrixB [][]float32) [][]float32 {
 		matrixC[0][0] = matrixA[0][0] * matrixB[0][0]
 		return matrixC
 	}
-	if len(matrixA) == 2 {
-		matrixC := utils.MakeMatrix(2, 2)
-		matrixC[0][0] = matrixA[0][0]*matrixB[0][0] + matrixA[0][1]*matrixB[1][0]
-		matrixC[1][0] = matrixA[1][0]*matrixB[0][0] + matrixA[1][1]*matrixB[1][0]
-		matrixC[0][1] = matrixA[0][0]*matrixB[0][1] + matrixA[0][1]*matrixB[1][1]
-		matrixC[1][1] = matrixA[1][0]*matrixB[0][1] + matrixA[1][1]*matrixB[1][1]
+	// if len(matrixA) == 2 {
+	// 	matrixC := utils.MakeMatrix(2, 2)
+	// 	matrixC[0][0] = matrixA[0][0]*matrixB[0][0] + matrixA[0][1]*matrixB[1][0]
+	// 	matrixC[1][0] = matrixA[1][0]*matrixB[0][0] + matrixA[1][1]*matrixB[1][0]
+	// 	matrixC[0][1] = matrixA[0][0]*matrixB[0][1] + matrixA[0][1]*matrixB[1][1]
+	// 	matrixC[1][1] = matrixA[1][0]*matrixB[0][1] + matrixA[1][1]*matrixB[1][1]
 
-		return matrixC
-	}
+	// 	return matrixC
+	// }
 	if !utils.IsPowerOfTwo(len(matrixA)) {
 		matrixA = utils.PadMatrix(matrixA)
 	}
@@ -39,7 +39,13 @@ func StrassenMultiply(matrixA [][]float32, matrixB [][]float32) [][]float32 {
 	// Parallelize the computation of the seven intermediate matrices
 	var wg sync.WaitGroup
 
-	var m1, m2, m3, m4, m5, m6, m7 [][]float32
+	m1 := utils.MakeMatrix(len(matrixA)/2, len(matrixA)/2)
+	m2 := utils.MakeMatrix(len(matrixA)/2, len(matrixA)/2)
+	m3 := utils.MakeMatrix(len(matrixA)/2, len(matrixA)/2)
+	m4 := utils.MakeMatrix(len(matrixA)/2, len(matrixA)/2)
+	m5 := utils.MakeMatrix(len(matrixA)/2, len(matrixA)/2)
+	m6 := utils.MakeMatrix(len(matrixA)/2, len(matrixA)/2)
+	m7 := utils.MakeMatrix(len(matrixA)/2, len(matrixA)/2)
 	wg.Add(7)
 	go func(wg *sync.WaitGroup) {
 		defer wg.Done()
@@ -59,7 +65,7 @@ func StrassenMultiply(matrixA [][]float32, matrixB [][]float32) [][]float32 {
 	}(&wg)
 	go func(wg *sync.WaitGroup) {
 		defer wg.Done()
-		utils.CopyMatrix(m5, StrassenMultiply(AddMatrices(a11, a22), b22))
+		utils.CopyMatrix(m5, StrassenMultiply(AddMatrices(a11, a12), b22))
 	}(&wg)
 	go func(wg *sync.WaitGroup) {
 		defer wg.Done()

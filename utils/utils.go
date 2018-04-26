@@ -76,6 +76,14 @@ func CopyMatrix(newMatrix [][]float32, oldMatrix [][]float32) {
 
 	var wg sync.WaitGroup
 
+	if len(newMatrix) < len(oldMatrix) {
+		fmt.Println("new:", newMatrix)
+		fmt.Println("old:", oldMatrix)
+
+		newMatrix = oldMatrix
+		return
+	}
+
 	wg.Add(len(oldMatrix))
 	for row := range oldMatrix {
 		go copyRow(row, newMatrix, oldMatrix, &wg)

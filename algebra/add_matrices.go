@@ -1,7 +1,6 @@
 package algebra
 
 import (
-	"fmt"
 	"sync"
 )
 
@@ -15,7 +14,6 @@ func AddMatrices(matrixA [][]float32, matrixB [][]float32) [][]float32 {
 	}
 
 	aNumRows := len(matrixA)
-	fmt.Println(aNumRows)
 	aNumCols := len(matrixA[0])
 	bNumRows := len(matrixB)
 	bNumCols := len(matrixB[0])
