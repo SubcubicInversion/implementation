@@ -70,19 +70,19 @@ func InvertMatrix(matrix [][]float32) ([][]float32, error) {
 	go func(wg *sync.WaitGroup) {
 		defer wg.Done()
 		// TODO: Make this actually work because Go isn't this nice.
-		a = AddMatrices(aInv, StrassenMultiply(abdInv, caInv))
+		utils.CopyMatrix(a, AddMatrices(aInv, StrassenMultiply(abdInv, caInv)))
 	}(&wg)
 
 	go func(wg *sync.WaitGroup) {
 		defer wg.Done()
-		b = ScalarMultiply(-1, abdInv)
+		utils.CopyMatrix(b, ScalarMultiply(-1, abdInv))
 	}(&wg)
 
 	go func(wg *sync.WaitGroup) {
 		defer wg.Done()
-		c = ScalarMultiply(-1, StrassenMultiply(dInv, caInv))
+		utils.CopyMatrix(c, ScalarMultiply(-1, StrassenMultiply(dInv, caInv)))
 	}(&wg)
-	d = dInv
+	utils.CopyMatrix(d, dInv)
 	wg.Wait()
 
 	return matrix, nil

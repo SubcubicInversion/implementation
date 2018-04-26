@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"math"
 	"math/rand"
 	"sync"
@@ -31,7 +32,9 @@ func MakeMatrix(numRows int, numCols int) [][]float32 {
 // PadMatrix will pad a matrix with zeroes until its dimension is 2^n x 2^n.
 func PadMatrix(matrix [][]float32) [][]float32 {
 	currentDim := len(matrix)
-	newDim := int(math.Ceil(math.Log2(float64(currentDim))))
+	fmt.Println("CurrentDim:", currentDim)
+	newDim := int(math.Pow(2, math.Ceil(math.Log2(float64(currentDim)))))
+	fmt.Println("NewDim:", newDim)
 
 	newMatrix := MakeMatrix(newDim, newDim)
 

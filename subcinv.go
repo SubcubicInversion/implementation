@@ -8,7 +8,6 @@ import (
 	"github.com/SubcubicInversion/implementation/algebra"
 
 	"github.com/SubcubicInversion/implementation/utils"
-
 )
 
 func main() {
@@ -17,7 +16,7 @@ func main() {
 
 	fmt.Println(utils.IsPowerOfTwo(1))
 
-	a := utils.GenerateSquaredMatrix(5)
+	a := utils.GenerateSquareMatrix(5)
 	matrix := [][]float32{
 		{2, 7, 3, 5},
 		{5, 1, 5, 3},
@@ -25,14 +24,7 @@ func main() {
 		{1, 4, 6, 2},
 	}
 
-	det, err := algebra.GetDeterminant(matrix)
-
-	if err != nil {
-		fmt.Println(err)
-	} else {
-		fmt.Println(det)
-	}
-
+	fmt.Println(algebra.InvertMatrix(a))
 	fmt.Println(a)
 
 	fmt.Printf("Elapsed Time: %f seconds", timer.ElapsedTime(&executionTime).Seconds())

@@ -14,7 +14,7 @@ func ScalarMultiply(scalar float32, matrix [][]float32) [][]float32 {
 		return nil
 	}
 	if scalar == 1 {
-		return nil
+		return matrix
 	}
 
 	numRows := len(matrix)
