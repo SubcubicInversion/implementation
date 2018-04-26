@@ -18,11 +18,9 @@ func ScalarMultiply(scalar float32, matrix [][]float32) [][]float32 {
 	}
 
 	numRows := len(matrix)
+	numCols := len(matrix[0])
 
-	newMatrix := make([][]float32, numRows)
-	for row := range newMatrix {
-		newMatrix[row] = make([]float32, numRows)
-	}
+	newMatrix := utils.MakeMatrix(numRows, numCols)
 
 	utils.CopyMatrix(newMatrix, matrix)
 

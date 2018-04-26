@@ -19,15 +19,22 @@ func GenerateSquareMatrix(n int) [][]float32 {
 	return squareMatrix
 }
 
+// MakeMatrix makes returns a numRows x numCols matrix slice
+func MakeMatrix(numRows int, numCols int) [][]float32 {
+	matrix := make([][]float32, numRows)
+	for row := range matrix {
+		matrix[row] = make([]float32, numCols)
+	}
+	return matrix
+}
+
 // PadMatrix will pad a matrix with zeroes until its dimension is 2^n x 2^n.
 func PadMatrix(matrix [][]float32) [][]float32 {
 	currentDim := len(matrix)
 	newDim := int(math.Ceil(math.Log2(float64(currentDim))))
 
-	newMatrix := make([][]float32, newDim)
-	for row := range newMatrix {
-		newMatrix[row] = make([]float32, newDim)
-	}
+	newMatrix := MakeMatrix(newDim, newDim)
+
 	CopyMatrix(newMatrix, matrix)
 
 	return newMatrix
