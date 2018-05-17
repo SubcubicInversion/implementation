@@ -13,15 +13,7 @@ func StrassenMultiply(matrixA [][]float32, matrixB [][]float32) [][]float32 {
 		matrixC[0][0] = matrixA[0][0] * matrixB[0][0]
 		return matrixC
 	}
-	// if len(matrixA) == 2 {
-	// 	matrixC := utils.MakeMatrix(2, 2)
-	// 	matrixC[0][0] = matrixA[0][0]*matrixB[0][0] + matrixA[0][1]*matrixB[1][0]
-	// 	matrixC[1][0] = matrixA[1][0]*matrixB[0][0] + matrixA[1][1]*matrixB[1][0]
-	// 	matrixC[0][1] = matrixA[0][0]*matrixB[0][1] + matrixA[0][1]*matrixB[1][1]
-	// 	matrixC[1][1] = matrixA[1][0]*matrixB[0][1] + matrixA[1][1]*matrixB[1][1]
-
-	// 	return matrixC
-	// }
+	
 	if !utils.IsPowerOfTwo(len(matrixA)) {
 		matrixA = utils.PadMatrix(matrixA)
 	}
@@ -46,6 +38,7 @@ func StrassenMultiply(matrixA [][]float32, matrixB [][]float32) [][]float32 {
 	m5 := utils.MakeMatrix(len(matrixA)/2, len(matrixA)/2)
 	m6 := utils.MakeMatrix(len(matrixA)/2, len(matrixA)/2)
 	m7 := utils.MakeMatrix(len(matrixA)/2, len(matrixA)/2)
+	
 	wg.Add(7)
 	go func(wg *sync.WaitGroup) {
 		defer wg.Done()
@@ -97,19 +90,6 @@ func StrassenMultiply(matrixA [][]float32, matrixB [][]float32) [][]float32 {
 		utils.CopyMatrix(c22, AddMatrices(AddMatrices(AddMatrices(m1, ScalarMultiply(-1, m2)), m3), m6))
 	}(&wg)
 	wg.Wait()
-
-	// m1 := StrassenMultiply(AddMatrices(a11, a22), AddMatrices(b11, b22))
-	// m2 := StrassenMultiply(AddMatrices(a21, a22), b11)
-	// m3 := StrassenMultiply(a11, AddMatrices(b12, ScalarMultiply(-1, b22)))
-	// m4 := StrassenMultiply(a22, AddMatrices(b21, ScalarMultiply(-1, b11)))
-	// m5 := StrassenMultiply(AddMatrices(a11, a22), b22)
-	// m6 := StrassenMultiply(AddMatrices(a21, ScalarMultiply(-1, a11)), AddMatrices(b11, b12))
-	// m7 := StrassenMultiply(AddMatrices(a12, ScalarMultiply(-1, a22)), AddMatrices(b21, b22))
-
-	// Less parallelized
-	// c11 = StrassenMultiply(AddMatrices(a11, a22), AddMatrices(b11, b22)) + StrassenMultiply(a22, AddMatrices(b21, ScalarMultiply(-1, b11))) - StrassenMultiply(AddMatrices(a11, a22), b22) + StrassenMultiply(AddMatrices(a12, ScalarMultiply(-1, a22)), AddMatrices(b21, b22))
-	// c12 = StrassenMultiply(a11, AddMatrices(b12, ScalarMultiply(-1, b22)))
-	// c21 =
 
 	return matrixC
 }
