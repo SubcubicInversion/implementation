@@ -13,7 +13,7 @@ func StrassenMultiply(matrixA [][]float32, matrixB [][]float32) [][]float32 {
 		matrixC[0][0] = matrixA[0][0] * matrixB[0][0]
 		return matrixC
 	}
-	
+
 	if !utils.IsPowerOfTwo(len(matrixA)) {
 		matrixA = utils.PadMatrix(matrixA)
 	}
@@ -38,56 +38,56 @@ func StrassenMultiply(matrixA [][]float32, matrixB [][]float32) [][]float32 {
 	m5 := utils.MakeMatrix(len(matrixA)/2, len(matrixA)/2)
 	m6 := utils.MakeMatrix(len(matrixA)/2, len(matrixA)/2)
 	m7 := utils.MakeMatrix(len(matrixA)/2, len(matrixA)/2)
-	
+
 	wg.Add(7)
 	go func(wg *sync.WaitGroup) {
-		defer wg.Done()
 		utils.CopyMatrix(m1, StrassenMultiply(AddMatrices(a11, a22), AddMatrices(b11, b22)))
+		wg.Done()
 	}(&wg)
 	go func(wg *sync.WaitGroup) {
-		defer wg.Done()
 		utils.CopyMatrix(m2, StrassenMultiply(AddMatrices(a21, a22), b11))
+		wg.Done()
 	}(&wg)
 	go func(wg *sync.WaitGroup) {
-		defer wg.Done()
 		utils.CopyMatrix(m3, StrassenMultiply(a11, AddMatrices(b12, ScalarMultiply(-1, b22))))
+		wg.Done()
 	}(&wg)
 	go func(wg *sync.WaitGroup) {
-		defer wg.Done()
 		utils.CopyMatrix(m4, StrassenMultiply(a22, AddMatrices(b21, ScalarMultiply(-1, b11))))
+		wg.Done()
 	}(&wg)
 	go func(wg *sync.WaitGroup) {
-		defer wg.Done()
 		utils.CopyMatrix(m5, StrassenMultiply(AddMatrices(a11, a12), b22))
+		wg.Done()
 	}(&wg)
 	go func(wg *sync.WaitGroup) {
-		defer wg.Done()
 		utils.CopyMatrix(m6, StrassenMultiply(AddMatrices(a21, ScalarMultiply(-1, a11)), AddMatrices(b11, b12)))
+		wg.Done()
 	}(&wg)
 	go func(wg *sync.WaitGroup) {
-		defer wg.Done()
 		utils.CopyMatrix(m7, StrassenMultiply(AddMatrices(a12, ScalarMultiply(-1, a22)), AddMatrices(b21, b22)))
+		wg.Done()
 	}(&wg)
 	wg.Wait()
 
 	wg.Add(4)
 	go func(wg *sync.WaitGroup) {
-		defer wg.Done()
 		// TODO: Here, I am pointing these things to new slices. This will not
 		// provide a solution. Rather, I need to fill these slices with the result.
 		utils.CopyMatrix(c11, AddMatrices(AddMatrices(AddMatrices(m1, m4), ScalarMultiply(-1, m5)), m7))
+		wg.Done()
 	}(&wg)
 	go func(wg *sync.WaitGroup) {
-		defer wg.Done()
 		utils.CopyMatrix(c12, AddMatrices(m3, m5))
+		wg.Done()
 	}(&wg)
 	go func(wg *sync.WaitGroup) {
-		defer wg.Done()
 		utils.CopyMatrix(c21, AddMatrices(m2, m4))
+		wg.Done()
 	}(&wg)
 	go func(wg *sync.WaitGroup) {
-		defer wg.Done()
 		utils.CopyMatrix(c22, AddMatrices(AddMatrices(AddMatrices(m1, ScalarMultiply(-1, m2)), m3), m6))
+		wg.Done()
 	}(&wg)
 	wg.Wait()
 

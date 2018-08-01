@@ -14,7 +14,7 @@ func main() {
 
 	matrix1 := utils.GenerateSquareMatrix(512)
 
-	fmt.Println(algebra.InvertMatrix(matrix1))
+	algebra.InvertMatrix(matrix1)
 
 	elapsed := time.Since(start)
 	fmt.Printf("Elapsed Time: %s", elapsed)

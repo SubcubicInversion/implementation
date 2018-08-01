@@ -93,10 +93,10 @@ func CopyMatrix(newMatrix [][]float32, oldMatrix [][]float32) {
 
 // copyRow will copy the elements of a row in a matrix to the same row in another matrix, in parallel.
 func copyRow(row int, newMatrix [][]float32, oldMatrix [][]float32, wg *sync.WaitGroup) {
-	defer wg.Done()
 	for col := range oldMatrix[row] {
 		newMatrix[row][col] = oldMatrix[row][col]
 	}
+	wg.Done()
 }
 
 // IsPowerOfTwo checks if an integer is a power of two.

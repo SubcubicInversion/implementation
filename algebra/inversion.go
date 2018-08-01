@@ -68,16 +68,16 @@ func InvertMatrix(matrix [][]float32) ([][]float32, error) {
 	// Populate array with the blocks, inverting it.
 	wg.Add(3)
 	go func(wg *sync.WaitGroup) {
-		defer wg.Done()
 		utils.CopyMatrix(a, AddMatrices(aInv, StrassenMultiply(abdInv, caInv)))
+		wg.Done()
 	}(&wg)
 	go func(wg *sync.WaitGroup) {
-		defer wg.Done()
 		utils.CopyMatrix(b, ScalarMultiply(-1, abdInv))
+		wg.Done()
 	}(&wg)
 	go func(wg *sync.WaitGroup) {
-		defer wg.Done()
 		utils.CopyMatrix(c, ScalarMultiply(-1, StrassenMultiply(dInv, caInv)))
+		wg.Done()
 	}(&wg)
 	utils.CopyMatrix(d, dInv)
 	wg.Wait()

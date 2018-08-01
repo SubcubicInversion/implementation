@@ -33,7 +33,7 @@ func GetDeterminant(matrix [][]float32) (float32, error) {
 
 	for i := range matrix {
 		wg.Add(1)
-		go func() {
+		go func(i int) {
 			innerMatrix := extractInnerMatrixIgnoringGivenRowAndCol(0, i, matrix)
 			det, err := GetDeterminant(innerMatrix)
 
@@ -43,7 +43,7 @@ func GetDeterminant(matrix [][]float32) (float32, error) {
 				determinants[i] = det * float32(math.Pow(float64(-1), float64(i)))
 			}
 			wg.Done()
-		}()
+		}(i)
 	}
 
 	// Wait until all goroutines have finished before returning

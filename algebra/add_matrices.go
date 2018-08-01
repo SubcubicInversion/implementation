@@ -44,8 +44,8 @@ func AddMatrices(matrixA [][]float32, matrixB [][]float32) [][]float32 {
 
 // Add two rows of two matrices together in a goroutine
 func addRow(row int, matrixA [][]float32, matrixB [][]float32, result [][]float32, wg *sync.WaitGroup) {
-	defer wg.Done()
 	for col := range matrixA[row] {
 		result[row][col] = matrixA[row][col] + matrixB[row][col]
 	}
+	wg.Done()
 }

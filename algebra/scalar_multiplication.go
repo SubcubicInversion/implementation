@@ -37,8 +37,8 @@ func ScalarMultiply(scalar float32, matrix [][]float32) [][]float32 {
 
 // Multiply a row of a matrix in a goroutine
 func scaleRow(row int, scalar float32, matrix [][]float32, wg *sync.WaitGroup) {
-	defer wg.Done()
 	for col := range matrix[row] {
 		matrix[row][col] = matrix[row][col] * scalar
 	}
+	wg.Done()
 }
